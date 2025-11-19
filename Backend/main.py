@@ -8,12 +8,10 @@ from database import Base, engine, get_db
 from models import User, Video
 from ai_dummy import analyze_video
 
-# 启动时自动在 MySQL 里建表
 Base.metadata.create_all(bind=engine)
 
 app = FastAPI()
 
-# 允许安卓模拟器/手机访问
 origins = [
     "http://localhost",
     "http://127.0.0.1",
@@ -33,7 +31,6 @@ VIDEO_DIR = "videos"
 os.makedirs(VIDEO_DIR, exist_ok=True)
 
 # 用户注册 & 登录
-
 @app.post("/auth/register")
 def register(
     email: str = Form(...),
@@ -61,12 +58,10 @@ def login(
     ).first()
     if not user:
         raise HTTPException(status_code=401, detail="Invalid credentials")
-    # 这里简单返回 user_id，当作“假 token”
     return {"user_id": user.id, "email": user.email}
 
 
-# 频上传 / 列表 / 播放
-
+# 视频上传 / 列表 / 播放
 @app.post("/videos/upload")
 async def upload_video(
     user_id: int = Form(...),
@@ -109,7 +104,7 @@ def stream_video(video_id: int, db: Session = Depends(get_db)):
     return FileResponse(video.file_path, media_type="video/mp4")
 
 
-# -------- AI 分析接口 --------
+# upcoming
 
 @app.post("/ai/analyze/{video_id}")
 def ai_analyze(video_id: int, db: Session = Depends(get_db)):

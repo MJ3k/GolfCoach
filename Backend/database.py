@@ -7,7 +7,7 @@ SQLALCHEMY_DATABASE_URL = "mysql+pymysql://golfuser:password@localhost:3306/golf
 
 engine = create_engine(
     SQLALCHEMY_DATABASE_URL,
-    pool_pre_ping=True,   # 避免连接断开带来的问题
+    pool_pre_ping=True,
 )
 
 SessionLocal = sessionmaker(autocommit=False, autoflush=False, bind=engine)
